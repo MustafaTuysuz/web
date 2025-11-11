@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayrılalım mı?</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 500px;
+        }
+
+        .door-image {
+            width: 300px;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            color: #333;
+            font-size: 32px;
+            margin-bottom: 30px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        button {
+            padding: 15px 40px;
+            font-size: 18px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .btn-no {
+            background: #ff4757;
+            color: white;
+        }
+
+        .btn-no:hover {
+            background: #ff3838;
+            transform: scale(1.05);
+        }
+
+        .btn-yes {
+            background: #2ed573;
+            color: white;
+        }
+
+        .btn-yes:hover {
+            background: #26de81;
+            transform: scale(1.05);
+        }
+
+        .scary {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: black;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .scary img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .video-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: black;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        video {
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .counter {
+            margin-top: 20px;
+            color: #666;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="https://img3.stockfresh.com/files/c/creator76/m/79/955799_stock-photo-broken-heart.jpg" alt="Kırık Kalp" class="door-image">
+        <h1>Ayrılalım mı?</h1>
+        <div class="buttons">
+            <button class="btn-no" onclick="handleNo()">Hayır</button>
+            <button class="btn-yes" onclick="handleYes()">Evet</button>
+        </div>
+        <div class="counter" id="counter"></div>
+    </div>
+
+    <div class="scary" id="scary">
+        <img src="https://i.imgur.com/xP5Eo3a.jpg" alt="Korku">
+    </div>
+
+    <div class="video-container" id="videoContainer">
+        <video id="funnyVideo" controls autoplay>
+            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <audio id="screamSound" src="https://www.myinstants.com/media/sounds/female-scream.mp3"></audio>
+
+    <script>
+        let noCount = 0;
+
+        function handleNo() {
+            noCount++;
+            document.getElementById('counter').textContent = `6/${noCount}`;
+
+            if (noCount >= 6) {
+                showScary();
+            }
+        }
+
+        function showScary() {
+            document.getElementById('scary').style.display = 'flex';
+            document.getElementById('screamSound').play();
+
+            // 3 saniye sonra gizle
+            setTimeout(() => {
+                document.getElementById('scary').style.display = 'none';
+                noCount = 0;
+                document.getElementById('counter').textContent = '';
+            }, 3000);
+        }
+
+        function handleYes() {
+            document.getElementById('videoContainer').style.display = 'flex';
+            document.getElementById('funnyVideo').play();
+        }
+
+        // Video kapanış için
+        document.getElementById('videoContainer').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.style.display = 'none';
+                document.getElementById('funnyVideo').pause();
+                document.getElementById('funnyVideo').currentTime = 0;
+            }
+        });
+    </script>
+</body>
+</html>
